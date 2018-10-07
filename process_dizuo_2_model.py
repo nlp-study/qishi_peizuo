@@ -31,16 +31,21 @@ class Window(Frame):
         # self.master.config(menu = menu)
         self.file_path = "data/dizuo/21.jpg"
 
+        self.canvas_x = 50
+        self.canvas_y = 50
+        self.canvas_w = 600
+        self.canvas_h = 600
+        self.x = self.canvas_x
+
         self.init_canvas()
 
         self.build_buttons()
 
-
     def init_canvas(self):
-        self.w_canvas = 600
-        self.h_canvas = 600
-        self.canvas = Canvas(self,bg='red',height = self.h_canvas,width = self.w_canvas)
-        self.canvas.grid()
+        self.canvas = Canvas(self,bg='red',height = self.canvas_h,width = self.canvas_w)
+        self.canvas.place(x=self.canvas_x, y=self.canvas_y)
+        # self.canvas.grid()
+        self.canvas.bind('<Button-1>', self.set_entrance_points)
 
 
     def build_buttons(self):
@@ -59,11 +64,18 @@ class Window(Frame):
 
     def showImage(self,event):
 
-
         self.img = Image.open(self.file_path)
         self.img = ImageTk.PhotoImage(self.img)
-        im = self.canvas.create_image(0, 0, image=self.img)
-        self.canvas.pack()
+        img_w = self.img.width()
+        img_h = self.img.height()
+        img_center_x = self.canvas_x + img_w / 2 + 10
+        img_center_y = self.canvas_y + img_h / 2 + 10
+        im = self.canvas.create_image(img_center_x, img_center_y, image=self.img)
+
+        # self.canvas.place(x=100, y=100)
+
+        # self.canvas.grid()
+        # self.canvas.pack()
 
 
         #
@@ -86,6 +98,9 @@ class Window(Frame):
 
     def save_model(self,event):
         print('保存模型')
+
+    def set_entrance_points(self,event):
+        print("窗口坐标x:%d 窗口坐标y:%d\n"%(event.x,event.y))
 
 
 
